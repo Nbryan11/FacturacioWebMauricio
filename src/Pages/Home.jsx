@@ -234,7 +234,7 @@ const Home = () => {
 
   const cargarClientes = async () => {
     try {
-      const response = await axios.get("hhttps://api20250426224207.azurewebsites.net/api/customer");
+      const response = await axios.get("https://api20250426224207.azurewebsites.net/api/customer");
       setClientes(response.data);
     } catch (error) {
       console.error(error);
