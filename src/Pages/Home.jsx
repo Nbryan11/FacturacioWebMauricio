@@ -152,7 +152,7 @@ const Home = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:5140/api/factura",
+        "https://api20250426224207.azurewebsites.net/api/factura",
         facturaData,
         {
           headers: {
@@ -198,7 +198,7 @@ const Home = () => {
   const handleSubmitCliente = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5140/api/customer", formCliente);
+      await axios.post("https://api20250426224207.azurewebsites.net/api/customer", formCliente);
       alert("Cliente registrado exitosamente");
       setFormCliente({ Name: "", Email: "", Phone: "", Address: "" });
       cargarClientes();
@@ -211,7 +211,7 @@ const Home = () => {
   const handleSubmitProducto = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5140/api/producto", formProducto);
+      await axios.post("https://api20250426224207.azurewebsites.net/api/producto", formProducto);
       alert("Producto registrado exitosamente");
       setFormProducto({ Name: "", Description: "", Price: "" });
       cargarProductos();
@@ -224,7 +224,7 @@ const Home = () => {
   // Funciones para cargar datos
   const cargarProductos = async () => {
     try {
-      const response = await axios.get("http://localhost:5140/api/producto");
+      const response = await axios.get("https://api20250426224207.azurewebsites.net/api/producto");
       setProductos(response.data);
     } catch (error) {
       console.error(error);
@@ -234,7 +234,7 @@ const Home = () => {
 
   const cargarClientes = async () => {
     try {
-      const response = await axios.get("http://localhost:5140/api/customer");
+      const response = await axios.get("hhttps://api20250426224207.azurewebsites.net/api/customer");
       setClientes(response.data);
     } catch (error) {
       console.error(error);
@@ -244,7 +244,7 @@ const Home = () => {
 
   const cargarUsuarios = async () => {
     try {
-      const response = await axios.get("http://localhost:5140/api/user");
+      const response = await axios.get("https://api20250426224207.azurewebsites.net/api/user");
       setUsuarios(response.data);
       if (response.data.length > 0) {
         setFormFactura((prev) => ({
@@ -260,7 +260,7 @@ const Home = () => {
 
   const cargarFacturas = async () => {
     try {
-      const response = await axios.get("http://localhost:5140/api/factura");
+      const response = await axios.get("https://api20250426224207.azurewebsites.net/api/factura");
       setFacturas(response.data);
       setMostrarFacturas(true);
       setMostrarDetalle(false);
