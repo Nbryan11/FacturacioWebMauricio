@@ -31,6 +31,8 @@ const Home = () => {
   // Estados para otros formularios
   const [formCliente, setFormCliente] = useState({
     Name: "",
+    TipoDocumento: "",
+    Documento: "",
     Email: "",
     Phone: "",
     Address: "",
@@ -198,7 +200,10 @@ const Home = () => {
   const handleSubmitCliente = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://api20250426224207.azurewebsites.net/api/customer", formCliente);
+      await axios.post(
+        "https://api20250426224207.azurewebsites.net/api/customer",
+        formCliente
+      );
       alert("Cliente registrado exitosamente");
       setFormCliente({ Name: "", Email: "", Phone: "", Address: "" });
       cargarClientes();
@@ -211,7 +216,10 @@ const Home = () => {
   const handleSubmitProducto = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://api20250426224207.azurewebsites.net/api/producto", formProducto);
+      await axios.post(
+        "https://api20250426224207.azurewebsites.net/api/producto",
+        formProducto
+      );
       alert("Producto registrado exitosamente");
       setFormProducto({ Name: "", Description: "", Price: "" });
       cargarProductos();
@@ -224,7 +232,9 @@ const Home = () => {
   // Funciones para cargar datos
   const cargarProductos = async () => {
     try {
-      const response = await axios.get("https://api20250426224207.azurewebsites.net/api/producto");
+      const response = await axios.get(
+        "https://api20250426224207.azurewebsites.net/api/producto"
+      );
       setProductos(response.data);
     } catch (error) {
       console.error(error);
@@ -234,7 +244,9 @@ const Home = () => {
 
   const cargarClientes = async () => {
     try {
-      const response = await axios.get("https://api20250426224207.azurewebsites.net/api/customer");
+      const response = await axios.get(
+        "https://api20250426224207.azurewebsites.net/api/customer"
+      );
       setClientes(response.data);
     } catch (error) {
       console.error(error);
@@ -244,7 +256,9 @@ const Home = () => {
 
   const cargarUsuarios = async () => {
     try {
-      const response = await axios.get("https://api20250426224207.azurewebsites.net/api/user");
+      const response = await axios.get(
+        "https://api20250426224207.azurewebsites.net/api/user"
+      );
       setUsuarios(response.data);
       if (response.data.length > 0) {
         setFormFactura((prev) => ({
@@ -260,7 +274,9 @@ const Home = () => {
 
   const cargarFacturas = async () => {
     try {
-      const response = await axios.get("https://api20250426224207.azurewebsites.net/api/factura");
+      const response = await axios.get(
+        "https://api20250426224207.azurewebsites.net/api/factura"
+      );
       setFacturas(response.data);
       setMostrarFacturas(true);
       setMostrarDetalle(false);
@@ -363,6 +379,33 @@ const Home = () => {
                 value={formCliente.Name}
                 onChange={(e) =>
                   setFormCliente({ ...formCliente, Name: e.target.value })
+                }
+                required
+              />
+
+              <label>Tipo de Documento:</label>
+              <select
+                name="TipoDocumento"
+                value={formCliente.TipoDocumento}
+                onChange={(e) =>
+                  setFormCliente({
+                    ...formCliente,
+                    TipoDocumento: e.target.value,
+                  })
+                }
+                required
+              >
+                <option value="CC">Cédula de Ciudadanía</option>
+                <option value="NIT">NIT</option>
+              </select>
+
+              <label>Documento:</label>
+              <input
+                type="text"
+                name="Documento"
+                value={formCliente.Documento}
+                onChange={(e) =>
+                  setFormCliente({ ...formCliente, Documento: e.target.value })
                 }
                 required
               />
@@ -482,17 +525,17 @@ const Home = () => {
         {opcionSeleccionada === "facturas" && mostrarFacturas && (
           <div style={{ marginTop: "20px" }}>
             <h1>Facturas Registradas</h1>
-            
-            <button 
+
+            <button
               onClick={cargarFacturas}
-              style={{ 
-                marginBottom: "20px", 
+              style={{
+                marginBottom: "20px",
                 padding: "8px 15px",
                 backgroundColor: "#2196F3",
                 color: "white",
                 border: "none",
                 borderRadius: "4px",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             >
               Actualizar Listado
@@ -505,33 +548,54 @@ const Home = () => {
                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                   <thead>
                     <tr style={{ backgroundColor: "#f4f4f4" }}>
-                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>N° Factura</th>
-                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>Fecha</th>
-                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>Cliente</th>
-                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>Total</th>
-                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>Registrado por</th>
-                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>Acciones</th>
+                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        N° Factura
+                      </th>
+                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        Fecha
+                      </th>
+                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        Cliente
+                      </th>
+                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        Total
+                      </th>
+                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        Registrado por
+                      </th>
+                      <th style={{ padding: "10px", border: "1px solid #ddd" }}>
+                        Acciones
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {facturas.map((factura) => (
-                      <tr key={factura.invoiceId} style={{ borderBottom: "1px solid #ddd" }}>
-                        <td style={{ padding: "10px" }}>{factura.invoiceNumber}</td>
-                        <td style={{ padding: "10px" }}>{new Date(factura.date).toLocaleDateString()}</td>
+                      <tr
+                        key={factura.invoiceId}
+                        style={{ borderBottom: "1px solid #ddd" }}
+                      >
+                        <td style={{ padding: "10px" }}>
+                          {factura.invoiceNumber}
+                        </td>
+                        <td style={{ padding: "10px" }}>
+                          {new Date(factura.date).toLocaleDateString()}
+                        </td>
                         <td style={{ padding: "10px" }}>{factura.cliente}</td>
-                        <td style={{ padding: "10px" }}>${factura.total.toLocaleString()}</td>
+                        <td style={{ padding: "10px" }}>
+                          ${factura.total.toLocaleString()}
+                        </td>
                         <td style={{ padding: "10px" }}>{factura.usuario}</td>
                         <td style={{ padding: "10px" }}>
-                          <button 
+                          <button
                             onClick={() => verDetalleFactura(factura)}
-                            style={{ 
-                              padding: "5px 10px", 
+                            style={{
+                              padding: "5px 10px",
                               marginRight: "5px",
                               backgroundColor: "#4CAF50",
                               color: "white",
                               border: "none",
                               borderRadius: "3px",
-                              cursor: "pointer"
+                              cursor: "pointer",
                             }}
                           >
                             Ver Detalle
@@ -547,83 +611,151 @@ const Home = () => {
         )}
 
         {/* Detalle de factura */}
-        {opcionSeleccionada === "facturas" && mostrarDetalle && facturaDetalle && (
-          <div style={{ marginTop: "20px" }}>
-            <button 
-              onClick={volverAListado}
-              style={{ 
-                marginBottom: "20px",
-                padding: "8px 15px",
-                backgroundColor: "#2196F3",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer"
-              }}
-            >
-              ← Volver al listado
-            </button>
+        {opcionSeleccionada === "facturas" &&
+          mostrarDetalle &&
+          facturaDetalle && (
+            <div style={{ marginTop: "20px" }}>
+              <button
+                onClick={volverAListado}
+                style={{
+                  marginBottom: "20px",
+                  padding: "8px 15px",
+                  backgroundColor: "#2196F3",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                ← Volver al listado
+              </button>
 
-            <div style={{ 
-              backgroundColor: "white",
-              padding: "20px",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
-            }}>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div>
-                  <h2 style={{ marginTop: 0 }}>Factura #{facturaDetalle.invoiceNumber}</h2>
-                  <p><strong>Fecha:</strong> {new Date(facturaDetalle.date).toLocaleDateString()}</p>
+              <div
+                style={{
+                  backgroundColor: "white",
+                  padding: "20px",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div>
+                    <h2 style={{ marginTop: 0 }}>
+                      Factura #{facturaDetalle.invoiceNumber}
+                    </h2>
+                    <p>
+                      <strong>Fecha:</strong>{" "}
+                      {new Date(facturaDetalle.date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <p>
+                      <strong>Total:</strong> $
+                      {facturaDetalle.total.toLocaleString()}
+                    </p>
+                  </div>
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <p><strong>Total:</strong> ${facturaDetalle.total.toLocaleString()}</p>
-                </div>
-              </div>
 
-              <div style={{ margin: "20px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-                <div>
-                  <h3 style={{ borderBottom: "1px solid #eee", paddingBottom: "5px" }}>Cliente</h3>
-                  <p><strong>Nombre:</strong> {facturaDetalle.cliente}</p>
+                <div
+                  style={{
+                    margin: "20px 0",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "20px",
+                  }}
+                >
+                  <div>
+                    <h3
+                      style={{
+                        borderBottom: "1px solid #eee",
+                        paddingBottom: "5px",
+                      }}
+                    >
+                      Cliente
+                    </h3>
+                    <p>
+                      <strong>Nombre:</strong> {facturaDetalle.cliente}
+                    </p>
+                  </div>
+                  <div>
+                    <h3
+                      style={{
+                        borderBottom: "1px solid #eee",
+                        paddingBottom: "5px",
+                      }}
+                    >
+                      Vendedor
+                    </h3>
+                    <p>
+                      <strong>Atendido por:</strong> {facturaDetalle.usuario}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 style={{ borderBottom: "1px solid #eee", paddingBottom: "5px" }}>Vendedor</h3>
-                  <p><strong>Atendido por:</strong> {facturaDetalle.usuario}</p>
-                </div>
-              </div>
 
-              <h3 style={{ borderBottom: "1px solid #eee", paddingBottom: "5px" }}>Productos</h3>
-              <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "10px" }}>
-                <thead>
-                  <tr style={{ backgroundColor: "#f5f5f5" }}>
-                    <th style={{ padding: "10px", textAlign: "left" }}>Producto</th>
-                    <th style={{ padding: "10px", textAlign: "right" }}>Cantidad</th>
-                    <th style={{ padding: "10px", textAlign: "right" }}>Precio Unitario</th>
-                    <th style={{ padding: "10px", textAlign: "right" }}>Subtotal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {facturaDetalle.detalles.map((detalle, index) => (
-                    <tr key={index}>
-                      <td style={{ padding: "10px" }}>{detalle.producto}</td>
-                      <td style={{ padding: "10px", textAlign: "right" }}>{detalle.quantity}</td>
-                      <td style={{ padding: "10px", textAlign: "right" }}>${detalle.precioUnitario.toLocaleString()}</td>
-                      <td style={{ padding: "10px", textAlign: "right" }}>${detalle.subTotal.toLocaleString()}</td>
+                <h3
+                  style={{
+                    borderBottom: "1px solid #eee",
+                    paddingBottom: "5px",
+                  }}
+                >
+                  Productos
+                </h3>
+                <table
+                  style={{
+                    width: "100%",
+                    borderCollapse: "collapse",
+                    marginTop: "10px",
+                  }}
+                >
+                  <thead>
+                    <tr style={{ backgroundColor: "#f5f5f5" }}>
+                      <th style={{ padding: "10px", textAlign: "left" }}>
+                        Producto
+                      </th>
+                      <th style={{ padding: "10px", textAlign: "right" }}>
+                        Cantidad
+                      </th>
+                      <th style={{ padding: "10px", textAlign: "right" }}>
+                        Precio Unitario
+                      </th>
+                      <th style={{ padding: "10px", textAlign: "right" }}>
+                        Subtotal
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {facturaDetalle.detalles.map((detalle, index) => (
+                      <tr key={index}>
+                        <td style={{ padding: "10px" }}>{detalle.producto}</td>
+                        <td style={{ padding: "10px", textAlign: "right" }}>
+                          {detalle.quantity}
+                        </td>
+                        <td style={{ padding: "10px", textAlign: "right" }}>
+                          ${detalle.precioUnitario.toLocaleString()}
+                        </td>
+                        <td style={{ padding: "10px", textAlign: "right" }}>
+                          ${detalle.subTotal.toLocaleString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
 
-              <div style={{ 
-                marginTop: "20px", 
-                paddingTop: "10px",
-                borderTop: "1px solid #eee",
-                textAlign: "right"
-              }}>
-                <h3>Total: ${facturaDetalle.total.toLocaleString()}</h3>
+                <div
+                  style={{
+                    marginTop: "20px",
+                    paddingTop: "10px",
+                    borderTop: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  <h3>Total: ${facturaDetalle.total.toLocaleString()}</h3>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
         {/* Formulario de factura */}
         {opcionSeleccionada === "venta" && (
